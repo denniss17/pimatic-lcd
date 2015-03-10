@@ -7,13 +7,20 @@ module.exports = (env) ->
   # Require the [cassert library](https://github.com/rhoot/cassert).
   assert = env.require 'cassert'
 
-  LCD = require 'i2c-lcd'
+  LCD_I2C = require 'i2c-lcd'
+  LCD = require 'lcd'
 
   class LCDPlugin extends env.plugins.Plugin
 
     init: (app, @framework, @config) =>
-      lcd = new LCD(@config.bus, @config.address)
-      lcd.pendingOperation = lcd.init()
+      if @config.type == 'i2c'
+        lcd = new LCD_I2C(@config.bus, @config.address)
+        lcd.pendingOperation = lcd.init()
+      else
+        lcd = new LCD({'rs': @config.pins.rs, 'e': @config.pins.e, 'data': @config.pins.data, 'cols': @config.cols, 'rows': @config.rows})
+        lcd.pendingOperation = new Promise((resolve, reject) =>
+          lcd.on('ready', -> resolve())
+        )
       lcd._printedLines = []
       @framework.ruleManager.addActionProvider(
         new LCDDisplayActionProvider @framework, lcd, @config

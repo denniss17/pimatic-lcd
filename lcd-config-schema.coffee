@@ -6,6 +6,19 @@ module.exports = {
       description: "i2c bus device"
       type: "string"
       default: "/dev/i2c-1"
+    type:
+      description: "i2c or gpio pins"
+      type: "string" 
+      enum: ["i2c", "gpio"]
+      default: "i2c"
+    pins:
+      description: "gpio pins of the device"
+      type: "object"
+      default: {
+        "rs": 25, 
+        "e": 24,
+        "data": [23, 17, 21, 22]
+      }
     address:
       description: "address of the device"
       type: "number"

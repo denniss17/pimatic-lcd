@@ -12,11 +12,12 @@
   "homepage": "http://pimatic.org",
   "repository": {
     "type": "git",
-    "url": "git://github.com/pimatic/pimatic-lcd.git"
+    "url": "git://github.com/denniss17/pimatic-lcd.git"
   },
   "configSchema": "lcd-config-schema.coffee",
   "dependencies": {
-    "i2c-lcd": "^1.0.0"
+    "i2c-lcd": "^1.0.0",
+    "lcd": "^1.1.0"
   },
   "peerDependencies": {
     "pimatic": "0.8.*"
