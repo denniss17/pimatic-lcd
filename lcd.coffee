@@ -13,14 +13,14 @@ module.exports = (env) ->
   class LCDPlugin extends env.plugins.Plugin
 
     init: (app, @framework, @config) =>
-      if @config.type == 'i2c'
-        lcd = new LCD_I2C(@config.bus, @config.address)
-        lcd.pendingOperation = lcd.init()
-      else
+      if @config.type == 'gpio'
         lcd = new LCD({'rs': @config.pins.rs, 'e': @config.pins.e, 'data': @config.pins.data, 'cols': @config.cols, 'rows': @config.rows})
         lcd.pendingOperation = new Promise((resolve, reject) =>
           lcd.on('ready', -> resolve())
         )
+      else
+        lcd = new LCD_I2C(@config.bus, @config.address)
+        lcd.pendingOperation = lcd.init()
       lcd._printedLines = []
       @framework.ruleManager.addActionProvider(
         new LCDDisplayActionProvider @framework, lcd, @config
